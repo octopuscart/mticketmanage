@@ -263,8 +263,6 @@ class Movie extends CI_Model {
         foreach ($event_list as $ekey => $evalue) {
             $temparray = array();
 
-
-
             $theater_id = $evalue["theater_id"];
             $movie_id = $evalue["movie_id"];
             $template_id = $evalue["theater_template_id"];
@@ -272,12 +270,10 @@ class Movie extends CI_Model {
             $theaterobj = $this->theaterInformation($theater_id);
             $temparray["theaterobj"] = $theaterobj;
 
-
             $temparray["template"] = $this->theaterTemplate($theater_id)[$evalue["theater_template_id"]];
 
             $movieobj = $this->movieInforamtion($movie_id);
             $temparray["movie"] = $movieobj;
-
 
             $this->db->where('movie_id', $movie_id);
             $this->db->where('theater_id', $theater_id);
@@ -285,7 +281,6 @@ class Movie extends CI_Model {
             $query = $this->db->get('movie_event');
             $theaterobj = $query->result_array();
             $temparray["event_datetime"] = $theaterobj;
-
 
             array_push($eventlistarray, $temparray);
         }
@@ -303,12 +298,10 @@ class Movie extends CI_Model {
         $theaterobj = $this->theaterInformation($theater_id);
         $temparray["theaterobj"] = $theaterobj;
 
-
         $temparray["template"] = $this->theaterTemplate($theater_id)[$evalue["theater_template_id"]];
 
         $movieobj = $this->movieInforamtion($movie_id);
         $temparray["movie"] = $movieobj;
-
 
         $this->db->where('movie_id', $movie_id);
         $this->db->where('theater_id', $theater_id);
@@ -318,15 +311,12 @@ class Movie extends CI_Model {
         $theaterobj = $query->result_array();
         $temparray["event_datetime"] = $theaterobj;
 
-
-
         return $temparray;
     }
 
     function booking_mail($order_id, $subject = "") {
         setlocale(LC_MONETARY, 'en_US');
         $checkcode = REPORT_MODE;
-
 
         $this->db->where('booking_id', $bookingid);
         $query = $this->db->get('movie_ticket_booking');
@@ -622,6 +612,52 @@ class Movie extends CI_Model {
                     "color" => "#fff",
                     "row" => array(
                         "I" => $this->createRange(1, 22, 22, [], "I", $booked, $reserved, $paid, $gaps),
+                        "J" => $this->createRange(1, 22, 22, [16], "J", $booked, $reserved, $paid, $gaps),
+                        "K" => $this->createRange(1, 22, 22, [], "K", $booked, $reserved, $paid, $gaps),
+                        "L" => $this->createRange(1, 22, 22, [16], "L", $booked, $reserved, $paid, $gaps),
+                        "M" => $this->createRange(1, 22, 22, [], "M", $booked, $reserved, $paid, $gaps),
+                        "N" => $this->createRange(1, 22, 22, [16], "N", $booked, $reserved, $paid, $gaps),
+                        "O" => $this->createRange(1, 22, 22, [], "O", $booked, $reserved, $paid, $gaps),
+                        "P" => $this->createRange(1, 22, 22, [16, 5, 6, 7, 8, 9], "P", $booked, $reserved, $paid, $gaps),
+                    )
+                ),
+            )
+        );
+        return $layout;
+    }
+
+    function getLayout_GH_HSE4D($booked, $reserved, $paid, $classprice) {
+        $gaps = array("4" => "", "16" => "");
+        $layout = array(
+            "totalinrow" => 25,
+            "sitclass" => array(
+                "class1" => array(
+                    "price" => count($classprice) ? $classprice[0]["class_price"] : 0,
+                    "rowcount" => "2",
+                    "color" => "#fff",
+                    "row" => array(
+                        "B" => $this->createRange(1, 22, 22, [16], "B", $booked, $reserved, $paid, $gaps),
+                        "C" => $this->createRange(1, 22, 22, [], "C", $booked, $reserved, $paid, $gaps),
+                        "D" => $this->createRange(1, 22, 22, [16], "D", $booked, $reserved, $paid, $gaps),
+                        "E" => $this->createRange(1, 22, 22, [], "E", $booked, $reserved, $paid, $gaps),
+                    )
+                ),
+                "class2" => array(
+                    "price" => count($classprice) ? $classprice[1]["class_price"] : 0,
+                    "rowcount" => "6",
+                    "color" => "#fff",
+                    "row" => array(
+                        "F" => $this->createRange(1, 22, 22, [16], "F", $booked, $reserved, $paid, $gaps),
+                        "G" => $this->createRange(1, 22, 22, [], "G", $booked, $reserved, $paid, $gaps),
+                        "H" => $this->createRange(1, 22, 22, [16], "H", $booked, $reserved, $paid, $gaps),
+                        "I" => $this->createRange(1, 22, 22, [], "I", $booked, $reserved, $paid, $gaps),
+                    )
+                ),
+                "class3" => array(
+                    "price" => count($classprice) ? $classprice[2]["class_price"] : 0,
+                    "rowcount" => "5",
+                    "color" => "#fff",
+                    "row" => array(
                         "J" => $this->createRange(1, 22, 22, [16], "J", $booked, $reserved, $paid, $gaps),
                         "K" => $this->createRange(1, 22, 22, [], "K", $booked, $reserved, $paid, $gaps),
                         "L" => $this->createRange(1, 22, 22, [16], "L", $booked, $reserved, $paid, $gaps),
