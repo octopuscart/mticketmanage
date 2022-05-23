@@ -622,7 +622,13 @@ class MovieEvent extends CI_Controller {
         $data["eventlist"] = $eventlist;
         $data["totaldata"] = $totaldata;
         $data["totalpaymentsdata"] = $paymentdatatotal;
-        $this->load->view('Movie/bookingListReport', $data);
+        if($this->user_type == "Admin"){
+             $this->load->view('Movie/bookingListReport', $data);
+        }
+        else{
+             $this->load->view('Movie/bookingListReportDistributor', $data);
+        }
+       
     }
 
     function eventReport($event_id) {
@@ -700,7 +706,7 @@ class MovieEvent extends CI_Controller {
         }
 
 
-        if ($this->user_type == 'Admin' || $this->user_type == 'Manager') {
+        if ($this->user_type == 'Admin' || $this->user_type == 'Distributor') {
 
             $querystr = "SELECT mtb.*, ms.title as movie, me.event_date, me.event_time,  mt.title as theater FROM movie_ticket_booking as mtb
 join movie_theater as mt on mt.id = mtb.theater_id
