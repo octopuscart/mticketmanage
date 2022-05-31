@@ -71,7 +71,7 @@ class User_model extends CI_Model {
 
 $this->db->order_by('id', 'desc');
 
-        $this->db->where(array('user_type' => $user_type, 'status!=' => 'Blocked'));
+        $this->db->where(array('user_type!=' => "Admin", 'status!=' => 'Blocked'));
 
 
         $query = $this->db->get('admin_users');

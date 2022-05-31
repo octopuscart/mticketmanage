@@ -12,8 +12,9 @@ class UserManager extends CI_Controller {
         parent::__construct();
         $this->load->model('User_model');
         $this->load->library('session');
-        $this->user_id = $this->session->userdata('logged_in')['login_id'];
-        $this->user_type = $this->session->logged_in['user_type'];
+        $this->user_obj = $this->session->userdata('logged_in');
+        $this->user_id = $this->user_obj?$this->user_obj['login_id']:0;
+        $this->user_type = $this->session->logged_in?$this->session->logged_in['user_type']:"No Users";
     }
 
     public function index() {
@@ -62,14 +63,16 @@ class UserManager extends CI_Controller {
     }
 
     public function user_profile_record_xls($user_type) {
-        $data['user_type'] = $user_type;
-
-        $data['users_all'] = $this->User_model->user_reports("User");
+        $this->db->group_by('email');
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('movie_ticket_booking');
+        $customers = $query->result();
+        $data["users"] = $customers;
 
         $filename = 'customers_report_' . date('Ymd') . ".xls";
         $html = $this->load->view('userManager/userProfileRecordXls', $data, TRUE);
         ob_clean();
-        header("Content-Disposition: attachment; filename='$filename'");
+        header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/vnd.ms-excel");
         echo $html;
     }
